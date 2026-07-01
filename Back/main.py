@@ -2,7 +2,8 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from config.database import engine, Base
-
+from controllers.CategoriasController import router as categorias_router
+from controllers.TareasController import router as tareas_router
 
 Base.metadata.create_all(bind=engine)
 
@@ -27,7 +28,8 @@ app.add_middleware(
 )
 
 # ── Registrar routers ──────────────────────────
-
+app.include_router(categorias_router)
+app.include_router(tareas_router)
 
 # ── Ruta de salud ─────────────────────────────────────────────
 @app.get("/", tags=["Health"])
