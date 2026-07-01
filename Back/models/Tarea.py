@@ -1,6 +1,7 @@
-from sqlalchemy import Column, Integer, String, DateTime, Enum
+from sqlalchemy import Column, ForeignKey, Integer, String, DateTime, Enum
 from sqlalchemy.sql import func 
-from config.database import Base 
+from config.database import Base
+from sqlalchemy.orm import relationship
 
 class Tarea(Base):
 
@@ -16,5 +17,7 @@ class Tarea(Base):
 
     fecha_creacion = Column(DateTime(timezone=True), server_default=func.now())
 
-    categoria_id = Column(Integer, nullable=True)
+    categoria_id = Column(Integer, ForeignKey("categorias.id", ondelete="CASCADE"), nullable=True)
+    
+    categoria = relationship("Categoria", back_populates="tareas")
 
