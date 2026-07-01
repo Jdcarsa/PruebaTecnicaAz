@@ -17,6 +17,11 @@ pip install -r requirements.txt
 # 4. Iniciar API 
 uvicorn main:app --reload --port 8000
 ```
+### DataBase
+
+Despues de ejecutar el comando anterior para iniciar la API, en el archivo `main.py` se llama una funcion para
+generar unos datos de prueba. 
+
 
 ### Frontend
 

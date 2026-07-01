@@ -4,8 +4,12 @@ from fastapi.middleware.cors import CORSMiddleware
 from config.database import engine, Base
 from controllers.CategoriasController import router as categorias_router
 from controllers.TareasController import router as tareas_router
+from config.datos import cargarDatosPrueba
 
 Base.metadata.create_all(bind=engine)
+
+#  ──  Datos de Prueba ───────────────────────────────────────
+cargarDatosPrueba() 
 
 # ── Crear la aplicación ───────────────────────────────────────
 app = FastAPI(
@@ -20,10 +24,10 @@ app = FastAPI(
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-        "http://localhost:5173",   # Vite dev server
+        "http://localhost:5173",   
     ],
     allow_credentials=True,
-    allow_methods=["*"],           # GET, POST, PUT, DELETE, OPTIONS
+    allow_methods=["*"],
     allow_headers=["*"],
 )
 

@@ -1,4 +1,4 @@
-from Back.models import Categoria
+from models.Categoria import Categoria
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy.orm import Session
 
@@ -33,7 +33,7 @@ def createTarea(tarea: TareaCreate, db: Session = Depends(get_db)):
 def getTareas(estado: str = Query(None, description="Filtrar por estado de la tarea"),
     categoria_nombre: str = Query(None, description="Filtrar por categoría"),
     db: Session = Depends(get_db)):
-    
+
     query = db.query(Tarea)
 
     if estado:
