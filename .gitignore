@@ -55,3 +55,17 @@ Thumbs.db
 # Logs
 *.log
 logs/
+
+
+# React
+node_modules/
+pnpm-debug.log
+yarn-debug.log
+yarn-error.log
+.env
+.env.local
+.env.*.local
+build/
+dist/
+.DS_Store
+*.pem

@@ -16,3 +16,12 @@ pip install -r requirements.txt
 
 # 4. Iniciar API 
 uvicorn main:app --reload --port 8000
+```
+
+### Frontend
+
+```bash
+cd Front
+pnpm install
+pnpm run dev
+```
