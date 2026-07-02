@@ -1,4 +1,3 @@
-
 const API_URL = 'http://localhost:8000';
 
 export type EstadoTarea = 'pendiente' | 'en_progreso' | 'completada';
@@ -19,7 +18,6 @@ export async function getTareas(filtros?: { estado?: string; categoria_id?: numb
     
     const res = await fetch(`${API_URL}/tareas?${params}`);
     if (!res.ok) throw new Error('Error al obtener tareas');
-    console.log('Response from getTareas:', await res.clone().text());
     return res.json();
 }
 
@@ -33,3 +31,17 @@ export async function createTarea(data: any) {
     return res.json();
 }
 
+export async function cambiarEstado(id: number, estado: string) {
+    const res = await fetch(`${API_URL}/tareas/${id}/estado?estado=${estado}`, {
+        method: 'PATCH',
+    });
+    if (!res.ok) throw new Error('Error al cambiar estado');
+    return res.json();
+}
+
+export async function deleteTarea(id: number) {
+    const res = await fetch(`${API_URL}/tareas/${id}`, {
+        method: 'DELETE',
+    });
+    if (!res.ok) throw new Error('Error al eliminar tarea');
+}

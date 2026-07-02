@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { 
     getTareas, 
     createTarea, 
+    cambiarEstado, 
+    deleteTarea,
     type Tarea,
     type EstadoTarea 
 } from '../services/TareasService';
@@ -80,6 +82,24 @@ export default function TareasPage() {
         }
     };
 
+    const handleCambiarEstado = async (id: number, nuevoEstado: EstadoTarea) => {
+        try {
+            await cambiarEstado(id, nuevoEstado);
+            await cargarTareas();
+        } catch {
+            setError('Error al cambiar estado');
+        }
+    };
+
+    const handleEliminar = async (id: number) => {
+        if (!confirm('¿Eliminar esta tarea?')) return;
+        try {
+            await deleteTarea(id);
+            await cargarTareas();
+        } catch {
+            setError('Error al eliminar');
+        }
+    };
 
     if (cargando && categorias.length === 0) {
         return (
@@ -234,7 +254,39 @@ export default function TareasPage() {
                                             </td>
                                             <td>{new Date(tarea.fecha_creacion).toLocaleDateString('es-ES')}</td>
                                             <td className="text-end">
-
+                                                <div className="d-flex gap-1 justify-content-end">
+                                                    {tarea.estado !== 'completada' && (
+                                                        <>
+                                                            <button
+                                                                className="btn btn-outline-primary btn-sm"
+                                                                onClick={() => handleCambiarEstado(tarea.id, 'en_progreso')}
+                                                                disabled={tarea.estado === 'en_progreso'}
+                                                            >
+                                                                Progreso
+                                                            </button>
+                                                            <button
+                                                                className="btn btn-outline-success btn-sm"
+                                                                onClick={() => handleCambiarEstado(tarea.id, 'completada')}
+                                                            >
+                                                                Completar
+                                                            </button>
+                                                        </>
+                                                    )}
+                                                    {tarea.estado === 'completada' && (
+                                                        <button
+                                                            className="btn btn-outline-warning btn-sm"
+                                                            onClick={() => handleCambiarEstado(tarea.id, 'pendiente')}
+                                                        >
+                                                            Pendiente
+                                                        </button>
+                                                    )}
+                                                    <button
+                                                        className="btn btn-outline-danger btn-sm"
+                                                        onClick={() => handleEliminar(tarea.id)}
+                                                    >
+                                                        Eliminar
+                                                    </button>
+                                                </div>
                                             </td>
                                         </tr>
                                     ))}

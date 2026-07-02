@@ -26,7 +26,7 @@ def createTarea(tarea: TareaCreate, db: Session = Depends(get_db)):
     new_tarea = Tarea(**tarea.dict())
     db.add(new_tarea)
     db.commit()
-    db.refresh(new_tarea)
+    db.refresh(new_tarea)   
     return new_tarea
 
 @router.get("/", response_model=list[TareaOut])
@@ -67,6 +67,23 @@ def updateTarea(tarea_id: int, tarea: TareaUpdate, db: Session = Depends(get_db)
     for key, value in tarea.dict(exclude_unset=True).items():
         setattr(existing_tarea, key, value)
 
+    db.commit()
+    db.refresh(existing_tarea)
+
+    return existing_tarea
+
+@router.patch("/{tarea_id}/estado", response_model=TareaOut)
+def cambiarEstado(tarea_id: int, estado: str, db: Session = Depends(get_db)):
+
+    existing_tarea = db.query(Tarea).filter(Tarea.id == tarea_id).first()
+
+    if not existing_tarea:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Tarea no encontrada")
+
+    if estado not in ["pendiente", "en_progreso", "completada"]:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Estado inválido")
+
+    existing_tarea.estado = estado
     db.commit()
     db.refresh(existing_tarea)
 
