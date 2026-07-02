@@ -31,15 +31,15 @@ def createTarea(tarea: TareaCreate, db: Session = Depends(get_db)):
 
 @router.get("/", response_model=list[TareaOut])
 def getTareas(estado: str = Query(None, description="Filtrar por estado de la tarea"),
-    categoria_nombre: str = Query(None, description="Filtrar por categoría"),
+    categoria_id: str = Query(None, description="Filtrar por categoría"),
     db: Session = Depends(get_db)):
 
     query = db.query(Tarea)
 
     if estado:
         query = query.filter(Tarea.estado == estado)
-    if categoria_nombre:
-        query = query.join(Categoria).filter(Categoria.nombre == categoria_nombre)
+    if categoria_id:
+        query = query.join(Categoria).filter(Categoria.id == categoria_id)
 
     tareas = query.all()
 

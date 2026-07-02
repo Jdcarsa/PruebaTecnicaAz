@@ -45,7 +45,6 @@ class TareaUpdate(BaseModel):
 class TareaOut(TareaBase):
     id: int
     fecha_creacion: datetime
-
     @field_serializer('fecha_creacion')
     def serialize_fecha(self, fecha: datetime, _info):
         return fecha.strftime('%Y-%m-%d')
